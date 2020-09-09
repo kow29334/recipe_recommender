@@ -1,0 +1,58 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    container_name: mongodb
+    hostname: mongodb
+    volumes:
+      - ./mongodb:/data/db
+    restart: always
+    expose:
+      - 6016
+    ports:
+      - "27017:27017"
+
+  adminmongo:
+    image: mrvautin/adminmongo
+    container_name: adminmongo
+    hostname: adminmongo
+    ports:
+      - "1234:1234"
+    environment:
+      - HOST=0.0.0.0
+
+  jupyter:
+    build:
+      context: ./dockerfile
+      dockerfile: dockerfile-jupyter
+    container_name: jupyter
+    hostname: jupyter
+    ports:
+      - "8889:8888"
+    command: start-notebook.sh --NotebookApp.token=''
+    volumes:
+      - ./jupyter:/home/jovyan/work
+
+  pyspark:
+    image: orozcohsu/pyspark_mongo_ltu:v3
+    container_name: pyspark
+    hostname: pyspark
+    ports:
+      - "8890:8888"
+      - "4040:4040"
+      - "4041:4041"
+    command: start-notebook.sh --NotebookApp.token=''
+    volumes:
+      - ./pyspark:/pyspark
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    hostname: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=iii
+    volumes:
+      - ./mysql_db/mysql_data:/var/lib/mysql
+      - ./mysql_db/mysql_init:/docker-entrypoint-initdb.d/
