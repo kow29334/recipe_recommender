@@ -209,9 +209,9 @@ def saveFile(content_dict, directory, item_no):
 
 if __name__ == '__main__':
 
-    searching_list = ['健身','增肌','低卡','低碳','減脂','生酮','健康']
+    #searching_list = ['健康'] #'健身','增肌','低卡','低碳','減脂','生酮',
 
-    #searching_list = ['西式','日式','歐式','中式','快速','三明治']
+    searching_list = ['西式', '日式', '歐式', '中式', '快速','健康','三明治','沙拉','素食','牛肉']
     for item in searching_list:
         result_list = getRecipeList(item,50)
         getRecipeContent(item, result_list)
